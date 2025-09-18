@@ -22,13 +22,6 @@ const Logs = () => {
   });
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    fetchLogs();
-    if (user?.role === 'adm') {
-      fetchUsers();
-    }
-  }, [fetchLogs, user?.role]);
-
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -63,7 +56,14 @@ const Logs = () => {
     } finally {
       setLoading(false);
     }
-  }, [pagination.page, pagination.limit, filters, user?.role]);
+  }, [pagination.page, pagination.limit, filters]);
+
+  useEffect(() => {
+    fetchLogs();
+    if (user?.role === 'adm') {
+      fetchUsers();
+    }
+  }, [fetchLogs, user?.role]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

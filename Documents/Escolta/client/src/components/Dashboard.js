@@ -15,10 +15,6 @@ const Dashboard = () => {
   const [recentLogs, setRecentLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, [fetchDashboardData]);
-
   const fetchDashboardData = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
@@ -42,6 +38,10 @@ const Dashboard = () => {
       setLoading(false);
     }
   }, [user?.role]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('pt-BR');
