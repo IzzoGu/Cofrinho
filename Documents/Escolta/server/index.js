@@ -6,7 +6,7 @@ const qrRoutes = require('./routes/qr');
 const logRoutes = require('./routes/logs');
 const userRoutes = require('./routes/users');
 const qrGeneratorRoutes = require('./routes/qr-generator');
-const { initDatabase } = require('./database/postgres');
+const { initDatabase } = require('./database/init');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -40,8 +40,10 @@ if (process.env.NODE_ENV === 'production') {
 
 // Initialize database and start server
 initDatabase().then(() => {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Acesse: http://localhost:${PORT}`);
+    console.log(`Acesse externamente: http://192.168.0.35:${PORT}`);
   });
 }).catch(err => {
   console.error('Erro ao inicializar banco de dados:', err);

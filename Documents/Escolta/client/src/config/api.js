@@ -1,5 +1,5 @@
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://escolta-backend-production.up.railway.app' 
+  ? 'http://192.168.0.35:5000' 
   : 'http://localhost:5000';
 
 export default API_BASE_URL;

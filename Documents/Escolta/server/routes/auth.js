@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { pool } = require('../database/postgres');
+const { db } = require('../database/init');
 
 const router = express.Router();
 
@@ -13,15 +13,14 @@ router.post('/login', (req, res) => {
     return res.status(400).json({ error: 'Username e password são obrigatórios' });
   }
 
-  pool.query(
-    'SELECT * FROM users WHERE username = $1',
+  db.get(
+    'SELECT * FROM users WHERE username = ?',
     [username],
-    (err, result) => {
+    (err, user) => {
       if (err) {
         return res.status(500).json({ error: 'Erro interno do servidor' });
       }
 
-      const user = result.rows[0];
       if (!user) {
         return res.status(401).json({ error: 'Credenciais inválidas' });
       }
