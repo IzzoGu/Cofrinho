@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector de Conteúdo IA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+        .upload-area.dragover {
+            border-color: #0d6efd;
+            background-color: #e9ecef;
+        }
+        #result {
+            display: none;
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-container">
+        <h1 class="text-center mb-4">Detector de Conteúdo IA</h1>
+        
+        <div class="mb-3">
+            <label for="fileType" class="form-label">Tipo de Arquivo</label>
+            <select class="form-select" id="fileType">
+                <option value="image">Imagem</option>
+                <option value="video">Vídeo</option>
+                <option value="audio">Áudio</option>
+            </select>
+        </div>
+
+        <div class="upload-area" id="dropZone">
+            <div class="mb-3">
+                <i class="bi bi-cloud-upload"></i>
+                <h5>Arraste e solte seu arquivo aqui</h5>
+                <p class="text-muted">ou</p>
+                <input type="file" class="form-control" id="fileInput" style="display: none;">
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Selecione um arquivo
+                </button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-2">Analisando arquivo...</p>
+        </div>
+
+        <div id="result" class="alert">
+            <h5>Resultado da Análise</h5>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileType = document.getElementById('fileType');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const resultContent = document.getElementById('resultContent');
+
+        // Prevenir comportamento padrão do navegador
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Efeitos visuais durante drag and drop
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        // Processar o arquivo quando solto
+        dropZone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFileSelect, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                uploadFile(files[0]);
+            }
+        }
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('type', fileType.value);
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+
+                if (data.error) {
+                    result.className = 'alert alert-danger';
+                    resultContent.innerHTML = `<p>Erro: ${data.error}</p>`;
+                } else {
+                    result.className = 'alert alert-success';
+                    resultContent.innerHTML = `
+                        <p><strong>Resultado:</strong> ${data.is_ai_generated ? 'Conteúdo gerado por IA' : 'Conteúdo original'}</p>
+                        <p><strong>Confiança:</strong> ${data.confidence}</p>
+                        <p><strong>Detalhes:</strong></p>
+                        <pre>${JSON.stringify(data.details, null, 2)}</pre>
+                    `;
+                }
+            })
+            .catch(error => {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                result.className = 'alert alert-danger';
+                resultContent.innerHTML = `<p>Erro: ${error.message}</p>`;
+            });
+        }
+    </script>
+</body>
+</html> 

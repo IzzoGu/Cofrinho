@@ -1,0 +1,6 @@
+{
+    "jdk.advanced.disable.nbjavac": false,
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive"
+}

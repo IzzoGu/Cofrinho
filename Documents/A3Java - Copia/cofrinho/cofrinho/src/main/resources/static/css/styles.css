@@ -1,0 +1,79 @@
+:root {
+    --bradesco-red: #CC092F;
+    --bradesco-dark-red: #A00724;
+    --bradesco-light-gray: #F5F5F5;
+    --bradesco-gray: #666666;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bradesco-light-gray);
+}
+
+.bg-primary {
+    background-color: var(--bradesco-red) !important;
+}
+
+.navbar {
+    background-color: var(--bradesco-red) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background-color: var(--bradesco-red);
+    border-color: var(--bradesco-red);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary:focus-visible,
+.btn-primary:first-child:active,
+.btn-primary.show {
+    background-color: var(--bradesco-dark-red) !important;
+    border-color: var(--bradesco-dark-red) !important;
+    box-shadow: none !important;
+}
+
+.btn-primary:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(204, 9, 47, 0.25) !important;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.card-header {
+    background-color: var(--bradesco-red);
+    color: white;
+}
+
+.progress {
+    height: 25px;
+    background-color: #E9ECEF;
+}
+
+.progress-bar {
+    background-color: var(--bradesco-red);
+}
+
+.text-muted {
+    color: var(--bradesco-gray) !important;
+}
+
+.modal-header {
+    background-color: var(--bradesco-red);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+} 

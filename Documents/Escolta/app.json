@@ -1,0 +1,8 @@
+{
+  "name": "Escolta Platform Backend",
+  "description": "Backend para plataforma de controle de escolta",
+  "repository": "https://github.com/seu-usuario/escolta-platform",
+  "keywords": ["node", "express", "sqlite", "escolta"],
+  "image": "heroku/nodejs",
+  "stack": "heroku-20"
+}

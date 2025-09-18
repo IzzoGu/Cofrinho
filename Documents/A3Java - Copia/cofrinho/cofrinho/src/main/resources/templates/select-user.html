@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: head"></head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Selecione seu Usuário</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Foram encontrados múltiplos usuários com este nome. Por favor, selecione o seu:</p>
+                        <div class="list-group">
+                            <a th:each="usuario : ${usuarios}" 
+                               th:href="@{/cofrinho/login(selectedId=${usuario.id})}"
+                               class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1" th:text="${usuario.nome}"></h5>
+                                    <small th:text="'ID: ' + ${usuario.id}"></small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

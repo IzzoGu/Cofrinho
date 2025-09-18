@@ -1,0 +1,23 @@
+Gerenciamento 
+
+DOR: Perca volumosa de tempo com trabalho repetitivo.
+
+1- Acesso ao ambiente:
+
+	acessar cada solucao contratadas pelo cliente para obter dados 
+
+2- Analise:
+
+	analisa os dados coletados anteriormente, regras criticas, atualizações, eventos de segurança e boas praticas em geral.
+
+3- Consulta:
+
+	consultar as bases de dados para validar os dados 
+
+4- Registro:
+
+	criação de relatorios e apresentação
+
+5- Execução:
+
+	criar e aplicar o plano de ação.

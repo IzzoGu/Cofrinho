@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: head"></head>
+<body>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Suas Metas Financeiras</h2>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novaMetaModal">
+                    <i class="fas fa-plus"></i> Nova Meta
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" th:each="meta : ${metas}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${meta.concluida ? '[CONCLUÍDA] ' + meta.descricao : meta.descricao}"></h5>
+                        <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" 
+                                 th:classappend="${meta.concluida ? 'bg-success' : ''}"
+                                 th:style="'width: ' + ${(meta.valorAtual / meta.valorObjetivo) * 100} + '%'">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <small class="text-muted" th:text="${'R$ ' + #numbers.formatDecimal(meta.valorAtual, 1, 'POINT', 2, 'COMMA')}"></small>
+                            <small class="text-muted" th:text="${'R$ ' + #numbers.formatDecimal(meta.valorObjetivo, 1, 'POINT', 2, 'COMMA')}"></small>
+                        </div>
+                        <button class="btn btn-success btn-sm" 
+                                th:disabled="${meta.concluida}"
+                                th:onclick="'showDepositoModal(' + ${meta.id} + ')'">
+                            <i class="fas fa-plus"></i> Depositar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nova Meta -->
+    <div class="modal fade" id="novaMetaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nova Meta Financeira</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/cofrinho/meta/nova}" method="post" id="novaMetaForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição da Meta</label>
+                            <input type="text" class="form-control" id="descricao" name="descricao" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorMeta" class="form-label">Valor da Meta</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="valorMeta" name="valorMeta" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="depositoInicial" class="form-label">Depósito Inicial (opcional)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="depositoInicial" name="depositoInicial" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Criar Meta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Deposito -->
+    <div class="modal fade" id="depositoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fazer Depósito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="depositoForm" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="valor" class="form-label">Valor do Depósito</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="valor" name="valor" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Depositar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para disparar confetti
+            function dispararConfetti() {
+                const duration = 3 * 1000;
+                const animationEnd = Date.now() + duration;
+                const defaults = { 
+                    startVelocity: 30, 
+                    spread: 360, 
+                    ticks: 60, 
+                    zIndex: 999999,
+                    disableForReducedMotion: true
+                };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    const particleCount = 50 * (timeLeft / duration);
+                    
+                    // Disparar confetti do lado esquerdo
+                    confetti(Object.assign({}, defaults, { 
+                        particleCount, 
+                        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                        colors: ['#CC092F', '#A00724', '#FFD700', '#FFFFFF'] // Cores do Bradesco + dourado e branco
+                    }));
+                    
+                    // Disparar confetti do lado direito
+                    confetti(Object.assign({}, defaults, { 
+                        particleCount, 
+                        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                        colors: ['#CC092F', '#A00724', '#FFD700', '#FFFFFF'] // Cores do Bradesco + dourado e branco
+                    }));
+                }, 250);
+            }
+
+            // Configurar o formulário de nova meta
+            const novaMetaForm = document.getElementById('novaMetaForm');
+            novaMetaForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Erro ao criar meta. Por favor, tente novamente.');
+                    }
+                }).catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao criar meta. Por favor, tente novamente.');
+                });
+            });
+
+            // Configurar o formulário de depósito
+            const depositoForm = document.getElementById('depositoForm');
+            depositoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Erro ao fazer depósito');
+                }).then(data => {
+                    if (data.concluida) {
+                        dispararConfetti();
+                        // Aguardar a animação terminar antes de recarregar
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+                    } else {
+                        window.location.reload();
+                    }
+                }).catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao fazer depósito. Por favor, tente novamente.');
+                });
+            });
+        });
+
+        function showDepositoModal(metaId) {
+            const form = document.getElementById('depositoForm');
+            form.action = `/cofrinho/meta/${metaId}/depositar`;
+            new bootstrap.Modal(document.getElementById('depositoModal')).show();
+        }
+    </script>
+</body>
+</html> 

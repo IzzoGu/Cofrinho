@@ -1,0 +1,110 @@
+--Banco de dados--
+	-conceitual
+	-logico
+	-fisico
+	
+--dados--
+	
+	
+--SGBD--
+	-relacional:
+		maior controle dos dados, possibilita a criação de regras de restrição.
+	-n/ relacional:
+		auto desempenho na entrega de dados, mais ultilizados em redes sociais.
+	
+--Modelagem de banco de dados--
+	-entidades
+		forte (primaria)
+		fraca (dependente)
+		associativa (2 ou mais entidades)
+		
+	-atributos 
+		"tudo o que podemos armazenar."
+		-descritivos
+		-nominativos
+		-referenciais
+			adicionado a entidades fracas para identificar a entidade forte de origem.
+			
+	-classificação de atributos
+		-chave
+			identifica unicamente as instancias das entidades 
+			-chave primaria(pk)
+				unica, sequencial e da entidade
+			-chave unica(uk)
+				unica, n sequencial e do objeto
+			-chave composta
+				combinação de duas ou mais chaves
+			-chave secundária
+				chave auxiliar, focada em indexar as informações no banco(+desempenho)
+			-chave estrangeira(FK)
+				chave primaria exportada
+			
+		-simples ou não chave
+			descritores, caracteristicas simples
+		-*composto
+			outros atributos alinhados (endereço)
+		-*multivalorado
+			varios valores para uma instância (credito, debito, pix etc.)
+		-derivado
+			deriva de 2 ou mais atributos (peso + preço p/kilo = total | nota final)
+		
+			*por possuirem instancias passam a ser entidades 
+	
+
+			
+--Exercícios--
+	
+	Catalogo de CD's
+			
+		CDs	
+			-nome 
+			-preco de venda		
+		Faixas
+			-duração
+			-autores	
+		
+		Gravadora
+		
+		Compositor
+			
+		Cliente
+			-Musicas
+			-tempo de duração
+			-autores
+			
+		Compra
+			-gravadora
+			-preço de compra 
+			
+			
+			
+			
+		-cliente
+			id(pk)
+			cpf(uk)
+			nome(uk)
+			email(uk)
+			nascimento(simples)
+			celular(uk)
+			
+			-endereço(multivalorado)
+				id(pk)
+				CEP(simples)
+				rua(simples)
+				bairro(simples)
+				complemento(simples)
+				numero(simples)
+				
+				-cidade(multivalorado)
+					id(pk)
+					descrição(simples)
+				
+				-estado(multivalorado)
+					id(pk)
+					descrição(simples)
+					sigla(uk)
+				
+				
+			
+			
+		

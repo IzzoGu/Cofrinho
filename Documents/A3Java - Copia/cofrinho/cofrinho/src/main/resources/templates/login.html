@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: head"></head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Bem-vindo ao Cofrinho</h4>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/cofrinho/login}" method="post">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Digite seu nome:</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
