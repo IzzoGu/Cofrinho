@@ -9,7 +9,7 @@ const qrGeneratorRoutes = require('./routes/qr-generator');
 const { initDatabase } = require('./database/init');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
