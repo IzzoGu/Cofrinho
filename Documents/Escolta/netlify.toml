@@ -1,13 +1,14 @@
 [build]
   command = "npm run netlify-build"
   publish = "client/build"
+  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
 
 [[redirects]]
   from = "/api/*"
-  to = "https://escolta-backend.herokuapp.com/api/:splat"
+  to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
 

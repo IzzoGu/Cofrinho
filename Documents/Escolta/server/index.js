@@ -6,7 +6,7 @@ const qrRoutes = require('./routes/qr');
 const logRoutes = require('./routes/logs');
 const userRoutes = require('./routes/users');
 const qrGeneratorRoutes = require('./routes/qr-generator');
-const { initDatabase } = require('./database/init');
+const { initDatabase } = require('./database/postgres');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
