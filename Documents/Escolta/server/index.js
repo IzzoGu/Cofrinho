@@ -9,15 +9,10 @@ const qrGeneratorRoutes = require('./routes/qr-generator');
 const { initDatabase } = require('./database/init');
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
-const corsOptions = {
-  origin: ['https://escoltazelina.netlify.app', 'http://localhost:3000'],
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client/build')));
 
