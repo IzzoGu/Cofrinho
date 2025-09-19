@@ -4,26 +4,44 @@
   "description": "Plataforma de controle de escolta com scanner QR",
   "main": "server/index.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "node start-dev.js",
+    "dev-full": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/index.js",
-    "start": "node server/index.js",
+    "start": "node server/production.js",
+    "start-local": "node server/index.js",
     "client": "cd client && npm start",
     "build": "cd client && npm install && npm run build",
     "install-all": "npm install && cd client && npm install",
-    "netlify-build": "cd client && npm install && npm run build"
+    "netlify-build": "cd client && npm install && npm run build",
+    "deploy": "npm run build && npm start",
+    "tunnel": "node tunnel.js",
+    "externo": "node servidor-externo.js",
+    "check-ip": "ipconfig | findstr IPv4",
+    "diagnostico": "node diagnostico.js",
+    "firewall": "powershell -ExecutionPolicy Bypass -File config-firewall.ps1",
+    "gerenciar": "node gerenciar-servidor.js",
+    "status": "node gerenciar-servidor.js status",
+    "stop": "node gerenciar-servidor.js stop",
+    "restart": "node gerenciar-servidor.js restart",
+    "deploy-cloud": "node deploy-cloud.js",
+    "production": "npm run build && npm start",
+    "postinstall": "npm run build",
+    "mobile": "node mobile-start.js",
+    "deploy-railway": "node deploy-railway.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "sqlite3": "^5.1.6",
     "multer": "^1.4.5-lts.1",
     "qrcode": "^1.5.3",
-    "dotenv": "^16.3.1"
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.0.1",
-    "concurrently": "^8.2.2"
+    "selfsigned": "^3.0.1"
   }
 }
